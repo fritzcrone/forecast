@@ -30,6 +30,12 @@ L.control.scale({
     imperial: false,
 }).addTo(map);
 
+// MET Norway Wettervorhersage visualisieren
+async function showForecast(latlng) {
+    console.log("Popup erzeugen bei:", latlng);
+    showForecast(evt.latlng);
+}
+
 // auf Kartenklick reagieren
 map.on("click", function (evt) {
     console.log(evt.latlng);
