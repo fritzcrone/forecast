@@ -13,7 +13,7 @@ let map = L.map("map").setView([ibk.lat, ibk.lng], 5);
 let overlays = {
     forecast: L.featureGroup().addTo(map),
     wind: L.featureGroup().addTo(map)
-}
+};
 
 // Layer Control
 let layerControl = L.control.layers({
@@ -38,8 +38,26 @@ async function showForecast(latlng) {
     let response = await fetch(url);
     let jsondata = await response.json();
     //console.log(jsondata);
-}
 
+
+    // Popup erzeugen
+    let markup = `
+<ul>
+    <li>Luftdruck (hPa): air_pressure_at_sea_level</li>
+    <li>Lufttemperatur (C°): air_temperature</li>
+    <li>Bewölkungsgrad (%): cloud_area_fraction</li>
+    <li>Luftfeuchtigkeit (%): relative_humidity</li>
+    <li>Windrichtung (°): wind_from_direction</li>
+    <li>Windgeschwindigkeit (km/h): wind_speed</li>
+</ul>
+`;
+
+    L.popup([
+        latlng.lat, latlng.lng
+    ], {
+        content: markup
+    }).openOn(overlays.forecast);
+}
 // auf Kartenklick reagieren
 map.on("click", function (evt) {
     //console.log(evt.latlng);
