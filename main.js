@@ -30,6 +30,13 @@ L.control.scale({
     imperial: false,
 }).addTo(map);
 
+// Ort über OSM reverse Geocoding bestimmen
+async function getPlaceName(url){
+    let response = await fetch(url);
+    let jsondata = await response.json();
+    return jsondata.display_name;
+}
+
 // MET Norway Wettervorhersage visualisieren
 async function showForecast(latlng) {
     //console.log("Popup erzeugen bei:", latlng);
@@ -55,11 +62,13 @@ async function showForecast(latlng) {
     </ul>
 `;
 
-// Wettericons für die nächsten 24h in 3h Schritten
-for (let i=0; i<=24; i+=3) {
-let symbol = jsondata.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
-markup += `<img src="icons/${symbol}.svg" style= "width:32px">`;
-}
+    // Wettericons für die nächsten 24h in 3h Schritten
+    for (let i = 0; i <= 24; i += 3) {
+        let symbol = jsondata.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
+        let time = new Date(jsondata.properties.timeseries[i].time);
+        markup += `<img src="icons/${symbol}.svg" style= "width:32px"
+        title= "${time.toLocaleString()}">`;
+    }
 
     L.popup([
         latlng.lat, latlng.lng
