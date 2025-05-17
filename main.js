@@ -102,3 +102,40 @@ map.fire("click", {
         lng: ibk.lng,
     }
 })
+
+// Windy Karte
+// Windy Karte
+
+    async function loadWindLayer() {
+        try {
+            const response = await fetch('https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json');
+            const data = await response.json();
+            
+            const velocityLayer = L.velocityLayer({
+                displayValues: true,
+                displayOptions: {
+                    velocityType: "Wind",
+                    position: "bottomleft",
+                    speedUnit: "km/h",
+                    emptyString: "Keine Winddaten verfügbar",
+                    showCardinal: true,
+                    directionString: "Richtung",
+                    speedString: "Geschwindigkeit (km/h)"
+                },
+                data: data,
+                minVelocity: 0,
+                maxVelocity: 20,
+                velocityScale: 0.005,
+                colorScale: [
+                    "#3288bd", "#66c2a5", "#abdda4", "#e6f598",
+                    "#fee08b", "#fdae61", "#f46d43", "#d53e4f"
+                ],
+                opacity: 0.97
+            }).addTo(map);
+        } catch (error) {
+            console.error("Fehler beim Laden der Winddaten:", error);
+            alert("Winddaten konnten nicht geladen werden.");
+        }
+    }
+
+    loadWindLayer();
