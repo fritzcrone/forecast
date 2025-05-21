@@ -103,7 +103,7 @@ map.fire("click", {
     }
 })
 
-// Windy Karte
+
 // Windy Karte
 
     async function loadWindLayer() {
