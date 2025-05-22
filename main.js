@@ -105,20 +105,18 @@ map.fire("click", {
 
 
 // Windy Karte
-
-
     async function loadWindLayer() {
             let url = "https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json"
             let response = await fetch(url);
-            let data = await response.json();
+            let jsondata = await response.json();
             //console.log(jsondata[0].header.refTime);
             //console.log(jsondata[0].header.forecastTime);
-            let forecastDate = new Date(data[0].header.refTime);
-            forecastDate.setHours(forecastDate.getHours() + data[0].header.forecastTime);
+            let forecastDate = new Date(jsondata[0].header.refTime);
+            forecastDate.setHours(forecastDate.getHours() + jsondata[0].header.forecastTime);
             //console.log(forecastDate);
 
             let forecastSpan = document.querySelector("#forecast-link");
-            console.log(forecastSpan);
+            //console.log(forecastSpan);
             forecastSpan.innerHTML = `
             (<a href="${url}" target="met.no">${forecastDate.toLocaleString()}</a>)
             `;
@@ -135,7 +133,7 @@ map.fire("click", {
                     directionString: "Richtung",
                     speedString: "Geschwindigkeit (km/h)"
                 },
-                data: data,
+                data: jsondata,
                 minVelocity: 0,
                 maxVelocity: 20,
                 velocityScale: 0.010,
